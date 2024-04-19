@@ -5,7 +5,7 @@
  */
 
 function send_verification() {
-  successNotification("Verification email has successfully been sent!")
+  successNotification("Thư xác nhận đã được gửi vào email của bạn, vui lòng vào email kích hoạt để đăng nhập!")
   var user = firebase.auth().currentUser;
   user.sendEmailVerification().then(() => { }).catch((err) => errorNotification(err.message));
 }
