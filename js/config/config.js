@@ -4,9 +4,6 @@
  * @license MIT
  */
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 var firebaseConfig = {
   apiKey: "AIzaSyAXco-dKRlDgrzN6K4No73LarstGdzQZ9c",
   authDomain: "lnd-nhan-vien.firebaseapp.com",
@@ -18,5 +15,5 @@ var firebaseConfig = {
   measurementId: "G-NSS0XSRM13"
 };
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
+
