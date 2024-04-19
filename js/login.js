@@ -7,7 +7,7 @@
 let globalEmail = "";
 
 function login() {
-  console.log('Attempting to login user ...')
+  console.log('Đang đăng nhập ...')
   var userEmail = document.getElementById("email_field").value;
   var userPass = document.getElementById("password_field").value;
   const auth = firebase.auth();
