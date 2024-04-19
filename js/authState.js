@@ -13,7 +13,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       var email_verified = user.emailVerified;
       if (email_verified != true) {
         // User Verification Box displayed
-        console.log("Waiting for verification ...")
+        console.log("Đang chờ xác nhận ...")
         document.getElementById("user-div").style.display = "none";
         document.getElementById("login-div").style.display = "none";
         document.getElementById("registration-div").style.display = "none";
@@ -23,8 +23,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         send_verification();
       } else {
         // User is logged in
-        console.log("User is logged in.")
-        successNotification("Welcome, " + email_id + "!")
+        console.log("Đăng nhập thành công")
+        successNotification("Chào bạn, " + email_id + "!")
         document.getElementById("user-div").style.display = "block";
         document.getElementById("login-div").style.display = "none";
         document.getElementById("registration-div").style.display = "none";
@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
   } else {
     // No user is signed in.
-    console.log("You are currently not logged in to any account.")
+    console.log("Bạn chưa đăng nhập")
     document.getElementById("user-div").style.display = "none";
     document.getElementById("login-div").style.display = "block";
     document.getElementById("registration-div").style.display = "none";
