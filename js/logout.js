@@ -6,5 +6,5 @@
 
 function logout() {
   firebase.auth().signOut();
-  successNotification("Successfully logged out!")
+  successNotification("Đã thoát!")
 }
