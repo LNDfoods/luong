@@ -4,15 +4,19 @@
  * @license MIT
  */
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
 var firebaseConfig = {
-  apiKey: "AIzaSyCKGUmFr5B7Uag0NctkhCRDkAQoB5pYNQg",
-  authDomain: "fir-login-2eaf4.firebaseapp.com",
-  databaseURL: "https://fir-login-2eaf4-default-rtdb.firebaseio.com",
-  projectId: "fir-login-2eaf4",
-  storageBucket: "fir-login-2eaf4.appspot.com",
-  messagingSenderId: "608621681488",
-  appId: "1:608621681488:web:626e37a5cc92b8764aaa55",
-  measurementId: "G-T70T1M6SSE"
+  apiKey: "AIzaSyAXco-dKRlDgrzN6K4No73LarstGdzQZ9c",
+  authDomain: "lnd-nhan-vien.firebaseapp.com",
+  databaseURL: "https://lnd-nhan-vien-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "lnd-nhan-vien",
+  storageBucket: "lnd-nhan-vien.appspot.com",
+  messagingSenderId: "573851940489",
+  appId: "1:573851940489:web:281fa21341b8b43274f858",
+  measurementId: "G-NSS0XSRM13"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
