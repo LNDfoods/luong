@@ -5,12 +5,12 @@
  */
 
 function registration() {
-  console.log('Attempting to register user ...')
+  console.log('Đang đăng ký người dùng ...')
   var user_email = document.getElementById("user_email").value;
   var user_password = document.getElementById("user_password").value;
   var confirm_password = document.getElementById("confirm_password").value;
   if (user_password !== confirm_password) {
-    errorNotification("Passwords do not match!")
+    errorNotification("Mật khẩu không hợp lệ hoặc không trùng khớp!")
   } else {
     const auth = firebase.auth();
     const promise = auth.createUserWithEmailAndPassword(user_email, user_password);
