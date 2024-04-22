@@ -1,6 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
-function loginUser() {
+function login() {
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
 
