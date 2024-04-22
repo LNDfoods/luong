@@ -1,164 +1,53 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Firebase Login</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#e6511e">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="./css/style.css">
-  <!-- Noty -->
-  <link rel="stylesheet" href="lib/noty/noty.css">
-  <link rel="stylesheet" href="lib/noty/nest.css">
-  <style type="text/css">
-    #user-div {
-      display: none
-    }
+    <meta charset="UTF-8">
+    <title>Employee Login</title>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyAXco-dKRlDgrzN6K4No73LarstGdzQZ9c",
+        authDomain: "lnd-nhan-vien.firebaseapp.com",
+        databaseURL: "https://lnd-nhan-vien-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "lnd-nhan-vien",
+        storageBucket: "lnd-nhan-vien.appspot.com",
+        messagingSenderId: "573851940489",
+        appId: "1:573851940489:web:281fa21341b8b43274f858",
+        measurementId: "G-NSS0XSRM13"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+    </script>
+    <script>
+      function loginUser() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
 
-    #login-div {
-      display: none
-    }
-
-    #registration-div {
-      display: none
-    }
-
-    #send-verification-div {
-      display: none
-    }
-  </style>
+        db.collection("Users").doc(username).get().then((doc) => {
+          if (doc.exists) {
+            var userData = doc.data();
+            if (userData.password === password) {  // Kiểm tra mật khẩu
+              document.getElementById("userInfo").innerHTML = `Name: ${username}<br>DOB: ${userData.dob}<br>Gender: ${userData.gender}<br>Address: ${userData.address}<br>Phone: ${userData.phone}<br>Department: ${userData.department}<br>Position: ${userData.position}`;
+              console.log("Login successful");
+            } else {
+              console.log("Password is incorrect");
+              document.getElementById("userInfo").innerHTML = "Password is incorrect";
+            }
+          } else {
+            console.log("User not found");
+            document.getElementById("userInfo").innerHTML = "User not found";
+          }
+        }).catch((error) => {
+          console.error("Error reading document: ", error);
+        });
+      }
+    </script>
 </head>
-
 <body>
-  <div class="container">
-    <div class="row" id="registration-div">
-      <div class="login-box">
-        <h2>Tạo Tài Khoản</h2>
-        <div class="user-box">
-          <input class="form-control" type="email" id="user_email" required="">
-          <label>Email</label>
-        </div>
-        <div class="user-box">
-          <input class="form-control" type="password" id="user_password" required="">
-          <label>Mật khẩu</label>
-        </div>
-        <div class="user-box">
-          <input class="form-control" type="password" id="confirm_password" required="">
-          <label>Xác nhận mật khẩu</label>
-        </div>
-        <div class="user-box">
-          <a class="button" onclick="login()" class="btn btn-primary float-right">Đăng Nhập</a>
-          <a class="button shift" onclick="registration()" class="btn btn-primary">Đăng Ký</a>
-        </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row" id="send-verification-div">
-      <div class="confirmation-box">
-        <h2>Xác nhận Email</h2>
-        <div class="user-box">
-          <div id="user_para"></div>
-          <p>Vui lòng vào email của bạn để kích hoạt tài khoản</p>
-          <a class="button shift" onclick="logout()">Logout</a>
-        </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row" id="login-div">
-      <div class="login-box">
-        <h2>Đăng Nhập</h2>
-        <div class="user-box">
-          <input class="form-control" type="email" id="email_field" name="email" id="" required="">
-          <label>Email</label>
-        </div>
-        <div class="user-box">
-          <input class="form-control" type="password" id="password_field" name="password" required="">
-          <label>Mật Khẩu</label>
-        </div>
-        <div class="user-box">
-          <a class="button" onclick="reg_account()">Đăng Ký</a>
-          <a class="button shift" onclick="login()">Đăng Nhập</a>
-        </div>
-      </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="row" id="user-div">
-      <div class="user-dashboard">
-        <div class="grid-row">
-          <div class="grid-cell">
-            <h1>Xin chào!</h1> <!-- Display username here -->
-            <p>Bạn đăng sử dụng tài khoản: <span id="user_email_show">Loading ...</span>.</p>
-          </div>
-        </div>
-        <a class="button shift" href="#open-modal">Cài Đặt</a>
-        <a class="button shift" onclick="logout()">Đăng Xuất</a>
-      </div>
-    </div>
-    <div id="open-modal" class="modal-window">
-      <div>
-        <div class="login-box">
-          <a href="#" title="Close" class="modal-close">Đóng</a>
-          <h1>Cài Đặt</h1>
-          <div class="user-box">
-            <a class="button shift" id="" onclick=""></a>
-            <!-- Save Information-->
-          </div>
-        </div>
-      </div>
-    </div>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="loginUser()">Login</button>
+    <div id="userInfo"></div>
 </body>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
-<!-- Bootstrap -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"
-  integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous">
-  </script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-  </script>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<!-- Noty -->
-<link href="lib/noty/noty.css" rel="stylesheet">
-<link href="lib/noty/nest.css" rel="stylesheet">
-<script src="lib/noty/noty.js" type="text/javascript"></script>
-
-<!-- Firebase Config -->
-<script type="text/javascript" src="./js/config/config.js"></script>
-
-<!-- Functions -->
-<script type="text/javascript" src="./js/notification.js"></script>
-<script type="text/javascript" src="./js/login.js"></script>
-<script type="text/javascript" src="./js/logout.js"></script>
-<script type="text/javascript" src="./js/register.js"></script>
-<script type="text/javascript" src="./js/sendVerification.js"></script>
-<script type="text/javascript" src="./js/authState.js"></script>
-
-<script>
-  function registerServiceWorker() {
-    // register sw script in supporting browsers
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js', {
-        scope: '/'
-      }).then(() => {
-        console.log('Service Worker registered successfully.');
-      }).catch(error => {
-        console.log('Service Worker registration failed:', error);
-      });
-    }
-  }
-  registerServiceWorker();
-</script>
-
 </html>
