@@ -1,19 +1,19 @@
-/**
- * @file login.js
- * @author Sanjay Sunil
- * @license MIT
- */
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
-let globalEmail = "";
-
-function login() {
-  console.log('Đang đăng nhập ...')
-  var userEmail = document.getElementById("email_field").value;
-  var userPass = document.getElementById("password_field").value;
-  const auth = firebase.auth();
-  const promise = auth.signInWithEmailAndPassword(userEmail, userPass);
-  promise.then((response) => {
-    globalEmail = response.user.email;
+function loginUser(username, password) {
+  db.collection("Users").doc(username).get().then((doc) => {
+    if (doc.exists) {
+      var hashedPassword = doc.data().password;
+      if (bcrypt.compareSync(password, hashedPassword)) { // So sánh mật khẩu
+        console.log("Login successful");
+        // Tiếp tục với phiên đăng nhập
+      } else {
+        console.log("Password is incorrect");
+      }
+    } else {
+      console.log("User not found");
+    }
+  }).catch((error) => {
+    console.error("Error reading document: ", error);
   });
-  promise.catch((err) => errorNotification(err.message));
 }
